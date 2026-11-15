@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <head>
+  <!-- 1. Meta Charset Wajib Paling Atas -->
+  <meta charset="UTF-8"> 
+  <meta name="theme-color" content="#d6e8ff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Aplikasi CBT 2026</title>
+  
+  <!-- 2. Favicon SVG Data-URI yang Sudah Di-encode -->
+	<!-- Favicon menggunakan Logo SMAPA -->
+    <link rel="icon" type="image/png" href="https://sman4-pasuruan.sch.id/wp-content/uploads/2024/06/LOGO-SMAPA-1024x1024.png">
+   <!--	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💻%3C/text%3E%3C/svg%3E"> -->
+
+  <!-- Font Kaligrafi Dancing Script & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #1d4ed8;        /* Deep Kinetic Blue */
+      --primary-hover: #1e40af;
+      --accent: #0284c7;         /* Vector Velocity Cyan */
+      --bg-canvas: #cfe5ff;
+      --card-bg: #e4f1ff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border-color: #7fb2f5;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Kunci seleksi teks di dashboard/modal agar tidak terganggu saat klik */
+    .overlay, header, .card-footer-signature, button {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* === BACKGROUND CERAH INFORMATIKA === */
+    .bg-mesh {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 12% 15%, rgba(56, 189, 248, 0.50) 0%, transparent 45%),
+        radial-gradient(circle at 88% 85%, rgba(99, 140, 255, 0.35) 0%, transparent 45%),
+        #bfdbfe;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-size: 28px 28px;
+      background-image: 
+        linear-gradient(to right, rgba(29, 78, 216, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(29, 78, 216, 0.05) 1px, transparent 1px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* === OVERLAY MODAL === */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 9999;
+      background: rgba(37, 99, 235, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      overflow-y: auto;
+    }
+
+    .card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 26px 22px 18px 22px;
+      border-radius: 22px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 45px -10px rgba(29, 78, 216, 0.15);
+      z-index: 10;
+    }
+
+    /* Badge Ikon Informatika */
+    .motion-badge {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 12px auto;
+      background: #c4dffd;
+      border: 1px solid #60a5fa;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 8px 16px -4px rgba(29, 78, 216, 0.18);
+    }
+
+    .motion-svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    .sub-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #bfe3fb;
+      border: 1px solid #6bb8ee;
+      border-radius: 20px;
+      color: #0369a1;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .card h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .card p.subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+
+    /* Info Grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .info-box {
+      background: #f0f8ff;
+      border: 1px solid #93c5fd;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .info-box span.label {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .info-box span.value {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Rules List */
+    .rules-list {
+      background: #fff1f2;
+      border: 1px dashed #fecdd3;
+      border-radius: 12px;
+      padding: 11px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .rules-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 0.76rem;
+      color: #be123c;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+
+    .rules-item:last-child { margin-bottom: 0; }
+
+    /* Tombol Utama */
+    .btn-glow {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #1d4ed8, #0284c7);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 20px -5px rgba(29, 78, 216, 0.35);
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-glow:active { transform: scale(0.98); }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.35);
+    }
+
+    /* Catatan Kaki Kaligrafi */
+    .card-footer-signature {
+      margin-top: 14px;
+      text-align: right;
+      padding-right: 2px;
+    }
+
+    .signature-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #334155;
+      letter-spacing: 0.5px;
+    }
+
+    /* Header Ujian Aktif */
+    header {
+      height: 60px;
+      background: #d6e8ff;
+      border-bottom: 1px solid #7fb2f5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      position: relative;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+ 
+    .header-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exam-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .violation-badge {
+      font-size: 0.7rem;
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    .timer-badge {
+      background: #f0f8ff;
+      border: 1px solid #60a5fa;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: ui-monospace, monospace;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #1d4ed8;
+      letter-spacing: 1px;
+    }
+
+    .timer-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .finish-btn {
+      border: 1px solid #dc2626;
+      background: #fff1f2;
+      color: #b91c1c;
+      border-radius: 20px;
+      padding: 7px 13px;
+      font-size: .82rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .finish-btn:hover { background: #fee2e2; }
+
+    /* Tombol SELESAI muncul dengan animasi setelah 40 menit */
+    .finish-btn.finish-ready {
+      animation: finishReveal 0.65s ease-out both, finishPulse 2.2s ease-in-out 0.65s infinite;
+    }
+    @keyframes finishReveal {
+      from { opacity: 0; transform: translateY(-8px) scale(.92); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes finishPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.16); }
+      50%      { box-shadow: 0 0 0 5px rgba(220, 38, 38, 0.08); }
+    }
+
+    .timer-warning {
+      background: #ef4444;
+      border-color: #dc2626;
+      color: #ffffff;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 1; }
+      to { opacity: 0.65; }
+    }
+
+    /* Area Formulir (Touch-Scroll Bebas Macet di HP) */
+    .form-container {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: calc(100% - 60px);
+      background: #cfe5ff;
+      z-index: 10;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-y !important;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 1200px;
+      border: none;
+      background: #fff;
+    }
+
+    .hidden { display: none !important; }
+
+    /* Responsif HP kecil, tablet, dan laptop */
+    .participant-input { width:100%; padding:13px 14px; margin:0 0 12px; border:1px solid #93c5fd; border-radius:12px; background:#fff; font:600 16px "Plus Jakarta Sans",sans-serif; color:#0f172a; outline:none; }
+    .participant-input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.13); }
+    @media (max-width:600px) {
+      .overlay { padding:12px; align-items:flex-start; }
+      .card { margin:auto 0; padding:22px 16px 16px; border-radius:18px; }
+      .card h1 { font-size:1.2rem; }
+      .info-grid { gap:8px; }
+      .info-box { padding:9px; }
+      header { height:56px; padding:0 10px; }
+      .form-container { top:56px; height:calc(100% - 56px); }
+      .timer-badge { padding:6px 9px; font-size:.82rem; }
+      .timer-actions { gap:5px; }
+      .finish-btn { padding:6px 9px; font-size:.72rem; }
+      .exam-title { font-size:.82rem; }
+      .violation-badge { font-size:.62rem; }
+    }
+    @media (min-width:601px) and (max-width:1024px) { .card { max-width:460px; } }
+
+  </style>
+</head>
+<body>
+
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+
+  <!-- 1. Beranda Ujian / Start Screen -->
+  <div id="startScreen" class="overlay">
+    <div class="card">
+           
+<!-- Logo SMAN 4 Pasuruan -->
+<div class="motion-badge">
+    <img
+        src="https://sman4-pasuruan.sch.id/wp-content/uploads/2024/06/LOGO-SMAPA-1024x1024.png"
+        alt="Logo SMAN 4 Pasuruan"
+        class="motion-svg"
+        style="width: 58px; height: 58px; object-fit: contain;"
+    >
+</div>
+
+      <span class="sub-badge">Evaluasi Pembelajaran</span>
+      <h1>Penilaian Sumatif Akhir Semester</h1>
+      <p class="subtitle">Tahun Pelajaran 2026-2027</p>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <span class="label">MATA PELAJARAN</span>
+		  <span class="value">📚 Semua Mapel</span>
+        </div>
+        <div class="info-box">
+          <span class="label">DURASI WAKTU</span>
+          <span class="value">⏱️ 60 Menit</span>
+        </div>
+        <div class="info-box">
+          <span class="label">SISTEM PSAS</span>
+          <span class="value">🔒 Kiosk Ketat</span>
+        </div>
+        <div class="info-box">
+          <span class="label">MAKS. PERINGATAN</span>
+          <span class="value">⚠️ 5x Toleransi</span>
+        </div>
+      </div>
+
+      <div class="rules-list">
+        <div class="rules-item">
+          <span>•</span>
+          <span>Layar otomatis beralih ke <b>Mode Layar Penuh</b>.</span>
+        </div>
+        <div class="rules-item">
+          <span>•</span>
+          <span><b>Dilarang</b> membuka Jendela Mengambang, Bola Pintas, atau beralih tab.</span>
+        </div>
+        <div class="rules-item">
+          <span>•</span>
+          <span>Pelanggaran 5x akan <b>mengunci perangkat HP permanen</b>.</span>
+        </div>
+      </div>
+
+      <label for="participantCode" style="display:block;text-align:left;font-size:.78rem;font-weight:700;color:#334155;margin:0 0 6px">Nomor Peserta / NIS</label>
+      <input id="participantCode" class="participant-input" type="text" inputmode="text" autocomplete="off" maxlength="40" placeholder="Masukkan nomor peserta / NIS" aria-label="Kode peserta">
+
+      <button class="btn-glow" onclick="startExam()">
+        <span>Mulai Mengerjakan</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+
+      <div class="card-footer-signature">
+      <!--   <span class="signature-text">@ HK-Informatika Smapa</span> -->
+      </div> 
+    </div>
+  </div>
+
+  <!-- 2. Modal Peringatan Sementara (Pelanggaran 1x s.d. 5x) -->
+  <div id="warningModal" class="overlay hidden">
+    <div class="card" style="border-color: #fca5a5;">
+      <div style="font-size: 2.2rem; margin-bottom: 6px;">⚠️</div>
+      <h1 style="color: #dc2626; font-size: 1.25rem;">PERINGATAN!</h1>
+      <p id="warningText" class="subtitle" style="margin-top: 6px; color: #475569;">Terdeteksi membuka aplikasi mengambang atau bilah pintas.</p>
+
+      <button class="btn-glow btn-danger" onclick="resumeExam()">Kembali ke Ujian</button>
+    </div>
+  </div>
+
+  <!-- 3. Modal KUNCI PERMANEN PERANGKAT (Auto-Block) -->
+  <div id="lockScreen" class="overlay hidden">
+    <div class="card" style="border-color: #fca5a5;">
+      <!-- Area tersembunyi untuk pengawas: ketuk 5x di pojok kanan atas kartu -->
+      <div id="secretZone" onclick="secretTap()" style="position:absolute; top:0; right:0; width:70px; height:70px; z-index:20;"></div>
+      <div style="font-size: 2.5rem; margin-bottom: 6px;">🛑</div>
+      <h1 style="color: #dc2626; font-size: 1.3rem;">PERANGKAT DIKUNCI</h1>
+      <p id="lockMessage" class="subtitle" style="margin-top: 8px; font-weight: 600; color: #334155;">
+        Akses ujian di perangkat ini telah dihentikan secara permanen oleh sistem.
+      </p>
+      <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;">
+        Membuka kembali tautan ini tidak akan membuka ujian. Silakan lapor langsung kepada pengawas di ruangan.
+      </p>
+    </div>
+  </div>
+
+  <!-- 4. Header Ujian Aktif -->
+  <header>
+    <div class="header-info">
+      <!-- Mini Motion Icon -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"></path>
+        <path d="m12 5 7 7-7 7"></path>
+        <circle cx="5" cy="12" r="2"></circle>
+      </svg>
+      <div class="header-titles">
+        <span class="exam-title">PSAS Ganjil 2026</span>
+        <span class="violation-badge" id="violationText">Pelanggaran: 0/5</span>
+      </div>
+    </div>
+    <!-- Timer dan tombol selesai -->
+    <div class="timer-actions">
+      <div class="timer-badge" id="timer">60:00</div>
+      <button type="button" class="finish-btn hidden" id="finishExamBtn" onclick="finishExam()">SELESAI</button>
+    </div>
+  </header>
+
+  <!-- Area Google Form Resmi Informatika -->
+  <div class="form-container" id="frameContainer">
+    <!-- Iframe dimuat secara dinamis via JavaScript -->
+  </div>
+
+  <script>
+    // === KONFIGURASI CBT + SUPABASE ===
+    const EXAM_ID = "INFORMATIKA2026";
+    const API_URL = "https://gbrrfdtospczcqzfmddk.supabase.co/functions/v1/cbt-violation";
+	const SUPABASE_ANON_KEY ="sb_publishable_RUPj5lBW2meoJpS0G1Aryg_vzS-P59I";
+    const FORM_URL = "https://forms.gle/grw8VTzfizSTktN6A";
+	  
+	
+
+    let examDurationMinutes = 60;
+    const MIN_FINISH_MINUTES = 40;
+    let maxViolations = 5;
+    let timeRemaining = examDurationMinutes * 60;
+    let violationCount = 0;
+    let timerInterval = null;
+    let isExamActive = false;
+    let wakeLockSentinel = null;
+    let cbtSessionId = sessionStorage.getItem("CBT_SESSION_" + EXAM_ID) || null;
+    let serverExpiresAt = null;
+
+    const startScreen = document.getElementById('startScreen');
+    const warningModal = document.getElementById('warningModal');
+    const lockScreen = document.getElementById('lockScreen');
+    const lockMessage = document.getElementById('lockMessage');
+    const timerDisplay = document.getElementById('timer');
+    const finishExamBtn = document.getElementById('finishExamBtn');
+    const violationText = document.getElementById('violationText');
+    const warningText = document.getElementById('warningText');
+    const frameContainer = document.getElementById('frameContainer');
+    const participantInput = document.getElementById('participantCode');
+
+    async function cbtRequest(payload) {
+  console.log("CBT REQUEST:", payload);
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + SUPABASE_ANON_KEY
+    },
+    body: JSON.stringify(payload)
+  });
+
+  console.log("HTTP STATUS:", response.status);
+
+  const result = await response.json().catch(() => ({}));
+
+  console.log("CBT RESPONSE:", result);
+
+  if (!response.ok) throw new Error(result.error || "Permintaan CBT gagal.");
+
+  return result;
+}
+	
+    
+
+    function showPermanentLockScreen(message) {
+      startScreen.classList.add('hidden');
+      warningModal.classList.add('hidden');
+      lockMessage.textContent = message;
+      lockScreen.classList.remove('hidden');
+      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    }
+
+    async function refreshServerStatus() {
+      if (!cbtSessionId) return null;
+      const result = await cbtRequest({ action:"status", session_id:cbtSessionId });
+      const session = result.session;
+      violationCount = Number(session.violation_count || 0);
+      violationText.textContent = `Pelanggaran: ${violationCount}/${maxViolations}`;
+      if (session.status === "locked") {
+        showPermanentLockScreen("Sesi ujian terkunci di server. Hubungi pengawas.");
+        isExamActive = false;
+      } else if (session.status !== "active") {
+        showPermanentLockScreen("Sesi ujian sudah selesai. Hubungi pengawas.");
+        isExamActive = false;
+      }
+      serverExpiresAt = new Date(session.expires_at).getTime();
+      return session;
+    }
+
+    // Jika browser dimuat ulang, status sesi tetap diambil dari server.
+    if (cbtSessionId) {
+      refreshServerStatus().then(session => {
+        if (session && session.status === "active") {
+          startScreen.classList.add("hidden");
+          isExamActive = true;
+          startTimer();
+        }
+      }).catch(() => {
+        // Jangan membuat sesi baru otomatis jika server gagal dihubungi.
+        startScreen.classList.remove("hidden");
+      });
+    }
+
+    // Google Forms ditampilkan langsung di area CBT (seperti file kedua), bukan tombol/tab baru.
+    function mountGoogleForm() {
+      if (document.getElementById("examFrame")) return;
+      frameContainer.innerHTML = `<iframe id="examFrame" title="Formulir Ujian" src="${FORM_URL}" width="100%" height="1200" frameborder="0" marginheight="0" marginwidth="0" scrolling="yes" allow="clipboard-write">Memuat formulir PSAS...</iframe>`;
+    }
+    mountGoogleForm();
+
+    // ====================================================
+    // 1B. ALARM PELANGGARAN KE-5 (sirine keras + getar)
+    // Diputar lewat elemen <audio> (jalur "media"), sehingga tetap bunyi walau
+    // HP dalam mode senyap/silent. Elemen "dibuka" saat siswa menekan tombol
+    // Mulai (syarat browser agar audio boleh diputar otomatis).
+    // ====================================================
+    const ALARM_SECONDS = 20; // lama alarm berbunyi (detik)
+    let alarmAudio = null;
+    let alarmStopTimer = null;
+
+    function buildSirenUrl() {
+      const rate = 22050, dur = 2;          // 2 detik, diputar berulang
+      const n = rate * dur;
+      const buf = new ArrayBuffer(44 + n * 2);
+      const v = new DataView(buf);
+      const wr = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+      wr(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); wr(8, 'WAVE');
+      wr(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+      v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+      wr(36, 'data'); v.setUint32(40, n * 2, true);
+      let phase = 0;
+      for (let i = 0; i < n; i++) {
+        const t = i / rate;
+        const f = 1100 + 400 * Math.sin(2 * Math.PI * t); // sapuan 700-1500 Hz tiap 1 detik
+        phase += f / rate;
+        const s = (phase % 1) < 0.5 ? 1 : -1;            // gelombang kotak = paling nyaring
+        v.setInt16(44 + i * 2, s * 30000, true);
+      }
+      return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+    }
+
+    // Dipanggil saat tombol "Mulai Mengerjakan" ditekan (butuh sentuhan pengguna)
+    function prepareAlarm() {
+      try {
+        if (alarmAudio) return;
+        alarmAudio = new Audio(buildSirenUrl());
+        alarmAudio.loop = true;
+        alarmAudio.volume = 1;
+        alarmAudio.preload = 'auto';
+        // "Buka kunci" audio secara senyap agar nanti boleh diputar otomatis
+        alarmAudio.muted = true;
+        const p = alarmAudio.play();
+        const done = () => { alarmAudio.pause(); alarmAudio.currentTime = 0; alarmAudio.muted = false; };
+        if (p && p.then) { p.then(done).catch(() => { alarmAudio.muted = false; }); } else { done(); }
+      } catch (e) {}
+    }
+
+    function playAlarm() {
+      try {
+        if (alarmAudio) {
+          alarmAudio.muted = false;
+          alarmAudio.volume = 1;
+          alarmAudio.currentTime = 0;
+          alarmAudio.play().catch(() => {});
+        }
+        if (navigator.vibrate) {
+          const pattern = [];
+          for (let i = 0; i < ALARM_SECONDS; i++) pattern.push(600, 400);
+          navigator.vibrate(pattern);
+        }
+        clearTimeout(alarmStopTimer);
+        alarmStopTimer = setTimeout(stopAlarm, ALARM_SECONDS * 1000);
+      } catch (e) {}
+    }
+
+    function stopAlarm() {
+      try {
+        clearTimeout(alarmStopTimer);
+        if (alarmAudio) { alarmAudio.pause(); alarmAudio.currentTime = 0; }
+        if (navigator.vibrate) navigator.vibrate(0);
+      } catch (e) {}
+    }
+
+    // ====================================================
+    // 2. EKSEKUSI KUNCI PERANGKAT PERMANEN
+    // ====================================================
+    async function lockDevicePermanently(reason, withAlarm) {
+      isExamActive = false;
+      clearInterval(timerInterval);
+      if (withAlarm) playAlarm();
+      frameContainer.innerHTML = "";
+      showPermanentLockScreen(reason);
+    }
+
+    // RESET SERVER oleh pengawas: ketuk 5x, lalu token dimasukkan secara privat.
+    let secretTaps = 0, secretTimer = null;
+    function secretTap() {
+      secretTaps++; clearTimeout(secretTimer);
+      secretTimer = setTimeout(() => secretTaps = 0, 4000);
+      if (secretTaps >= 5) {
+        secretTaps = 0; clearTimeout(secretTimer); stopAlarm();
+        const token = prompt("Token reset pengawas (jangan dibagikan):");
+        if (!token || !cbtSessionId) return;
+        cbtRequest({action:"reset", session_id:cbtSessionId, reset_token:token})
+          .then(() => { alert("Sesi berhasil direset di server. Halaman dimuat ulang."); location.reload(); })
+          .catch(err => alert(err.message));
+      }
+    }
+
+    // ====================================================
+    // 3. ALUR UJIAN AKTIF
+    // ====================================================
+    async function startExam() {
+      const participantCode = participantInput.value.trim();
+      if (!participantCode) { alert("Masukkan kode peserta/NIS terlebih dahulu."); participantInput.focus(); return; }
+      prepareAlarm();
+      try {
+        const startResult = await cbtRequest({action:"start", participant_code:participantCode});
+        cbtSessionId = startResult.session_id;
+        sessionStorage.setItem("CBT_SESSION_" + EXAM_ID, cbtSessionId);
+        serverExpiresAt = new Date(startResult.expires_at).getTime();
+        maxViolations = Number(startResult.max_violations || 5);
+        violationCount = 0;
+        violationText.textContent = `Pelanggaran: 0/${maxViolations}`;
+        const docEl = document.documentElement;
+        if (docEl.requestFullscreen) docEl.requestFullscreen().catch(() => {});
+        else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+        try { if ('wakeLock' in navigator) wakeLockSentinel = await navigator.wakeLock.request('screen'); } catch (err) {}
+        startScreen.classList.add('hidden');
+        isExamActive = true;
+        startTimer();
+      } catch (err) { alert("Tidak dapat memulai ujian: " + err.message); }
+    }
+
+    async function finishExam() {
+      if (!isExamActive) return;
+
+      const elapsedSeconds = (examDurationMinutes * 60) - timeRemaining;
+      if (elapsedSeconds < MIN_FINISH_MINUTES * 60) {
+        alert("Tombol SELESAI baru dapat digunakan setelah 40 menit pengerjaan.");
+        return;
+      }
+
+      const confirmed = confirm("Apakah Anda yakin ingin menyelesaikan ujian dan kembali ke menu awal?");
+      if (!confirmed) return;
+
+      isExamActive = false;
+      clearInterval(timerInterval);
+      timerInterval = null;
+      stopAlarm();
+
+      // Hapus sesi lokal agar peserta kembali ke menu awal dan dapat memulai sesi baru.
+      sessionStorage.removeItem("CBT_SESSION_" + EXAM_ID);
+      cbtSessionId = null;
+      serverExpiresAt = null;
+
+      try {
+        if (wakeLockSentinel) {
+          await wakeLockSentinel.release();
+          wakeLockSentinel = null;
+        }
+      } catch (e) {}
+      try {
+        if (document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen();
+        else if (document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
+      } catch (e) {}
+
+      timerDisplay.textContent = "60:00";
+      timerDisplay.classList.remove("timer-warning");
+      startScreen.classList.remove("hidden");
+      alert("Ujian diakhiri. Anda kembali ke menu awal CBT.");
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+
+      const tick = () => {
+        timeRemaining = Math.max(0, Math.ceil((serverExpiresAt - Date.now()) / 1000));
+        const minutes = Math.floor(timeRemaining / 60), seconds = timeRemaining % 60;
+        timerDisplay.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+
+        // Tombol SELESAI aktif setelah 40 menit waktu ujian berlalu.
+        const elapsedSeconds = (examDurationMinutes * 60) - timeRemaining;
+        const finishAllowed = elapsedSeconds >= MIN_FINISH_MINUTES * 60;
+
+        if (finishAllowed && finishExamBtn.classList.contains("hidden")) {
+          finishExamBtn.classList.remove("hidden");
+          finishExamBtn.classList.add("finish-ready");
+        } else if (!finishAllowed) {
+          finishExamBtn.classList.add("hidden");
+          finishExamBtn.classList.remove("finish-ready");
+        }
+
+        if (timeRemaining <= 300) timerDisplay.classList.add("timer-warning");
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          finishExamBtn.classList.add("hidden");
+          finishExamBtn.classList.remove("finish-ready");
+          lockDevicePermanently("Waktu pengerjaan ujian telah berakhir!");
+        }
+      };
+
+      tick();
+      timerInterval = setInterval(tick, 1000);
+    }
+
+    async function recordViolation(reason) {
+      if (!isExamActive || !cbtSessionId) return;
+      try {
+        const result = await cbtRequest({action:"violation", session_id:cbtSessionId, violation_type:String(reason).slice(0,120)});
+        violationCount = Number(result.violation_count);
+        violationText.textContent = `Pelanggaran: ${violationCount}/${result.max_violations}`;
+        if (result.locked || result.status === "locked") {
+          lockDevicePermanently(`Akses dihentikan! Batas ${result.max_violations} pelanggaran tercapai. Hubungi pengawas.`, true);
+        } else {
+          const sisa = result.max_violations - violationCount;
+          warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Pelanggaran ke-<b>${violationCount}</b> dari ${result.max_violations}. Sisa kesempatan: <b>${sisa}x</b>.`;
+          warningModal.classList.remove('hidden');
+        }
+      } catch (err) {
+        // Fail closed: jika server tidak dapat dihubungi, ujian dihentikan sementara.
+        isExamActive = false;
+        warningText.textContent = "Pelanggaran gagal dicatat ke server. Periksa koneksi dan lapor pengawas: " + err.message;
+        warningModal.classList.remove('hidden');
+      }
+    }
+
+    function resumeExam() {
+      isExamActive = true;
+      warningModal.classList.add('hidden');
+
+      const docEl = document.documentElement;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen().catch(() => {});
+        } else if (docEl.webkitRequestFullscreen) {
+          docEl.webkitRequestFullscreen();
+        }
+      }
+    }
+
+    // ====================================================================
+    // 4. DETEKSI KECURANGAN KETAT (JENDELA MENGAMBANG, BOLA PINTAS, SPLIT)
+    // ====================================================================
+
+    // A. DETEKSI HILANG FOKUS SISTEM REAL-TIME (Anti-Jendela Mengambang & Bola Pintas)
+    let unfocusedDuration = 0;
+    setInterval(() => {
+      if (!isExamActive) return;
+
+      if (!document.hasFocus()) {
+        unfocusedDuration += 250;
+        if (unfocusedDuration >= 500 && warningModal.classList.contains('hidden') && lockScreen.classList.contains('hidden')) {
+          recordViolation("Menyentuh Jendela Mengambang / Bola Pintas / Layar Luar");
+          unfocusedDuration = 0;
+        }
+      } else {
+        unfocusedDuration = 0;
+      }
+    }, 250);
+
+    // B. DETEKSI EVENT BLUR
+    window.addEventListener('blur', () => {
+      if (!isExamActive) return;
+      setTimeout(() => {
+        if (!document.hasFocus() && warningModal.classList.contains('hidden') && lockScreen.classList.contains('hidden')) {
+          recordViolation("Membuka aplikasi mengambang atau bilah pintas");
+        }
+      }, 400);
+    });
+
+    // C. DETEKSI PINDAH TAB / MINIMIZE BROWSER
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && isExamActive) {
+        recordViolation("Membuka aplikasi lain atau berganti layar");
+      }
+    });
+
+    // D. DETEKSI KELUAR FULLSCREEN / LAYAR BELAH (SPLIT SCREEN)
+    document.addEventListener('fullscreenchange', handleFullscreenExit);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
+
+    function handleFullscreenExit() {
+      const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+      if (!isFullscreen && isExamActive && warningModal.classList.contains('hidden')) {
+        recordViolation("Menutup mode layar penuh / Mengaktifkan Layar Belah");
+      }
+    }
+
+    // Blokir klik kanan
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+  </script>
+</body>
+</html>
